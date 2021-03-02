@@ -5,5 +5,7 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"open-in-browser.default": "firefox"
+	}
 }
