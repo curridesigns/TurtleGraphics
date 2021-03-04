@@ -26,25 +26,60 @@ class Turtle {
   }
 }
 
-let ctx,turtle;
+const can = document.querySelector('canvas')
 
-function init() {
-  window.requestAnimationFrame(draw);
-  ctx = document.getElementById('canvas').getContext('2d');
-  turtle = new Turtle(10,10,16,ctx);
+can.width = 200
+can.height = 200
+
+const ctx = can.getContext('2d')
+
+
+let lastTime = 0
+let aggregatedTime = 0
+const frameRateInMillis =  1000 / 20 // 30 FPS
+
+
+let x = 0
+let y = 100
+
+function setup(){
+  window.requestAnimationFrame(loop);
 }
 
-function draw() {
+function render () {
+
+	// Move box
+	x = (x + 1) % 200
   
+  // Background
+  ctx.fillStyle = "blue"
+	ctx.fillRect(0, 0, can.width, can.height)
 
-  //ctx.globalCompositeOperation = 'destination-over';
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clear canvas
+	// Box
+	ctx.fillStyle = "red"
+  ctx.fillRect(x - 15, y - 15, 30, 30)
 
-  turtle.render();
-  turtle.forward(100);
-  //console.log("hello");
-
-  window.requestAnimationFrame(draw);
 }
 
-init();
+function loop (time) { // Add the time parameter, and requestAnimation frame fills it in with the total time since starting
+	
+  let timeDifference = time - lastTime
+  //console.log(timeDifference) // Should be constant, probably around 16 (milliseconds)
+  lastTime = time
+	
+  // Add timeDifference to aggregatedTime
+  aggregatedTime += timeDifference
+  
+  if (aggregatedTime > frameRateInMillis) { // Divide by 1000 to get FPS
+  
+  	aggregatedTime = 0 // Reset aggregated time, it can also be carried over.
+  	
+    // DRAW HERE!
+    render()
+  
+  }
+
+	window.requestAnimationFrame(loop)
+}
+
+
