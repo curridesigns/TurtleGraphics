@@ -14,3 +14,6 @@ ctx.drawImage(can2, 0, 0, can.width, can.height)
 interpolation
 
 think in terms of a base unit
+
+read this book
+https://gameprogrammingpatterns.com/game-loop.html#interview-with-a-cpu
