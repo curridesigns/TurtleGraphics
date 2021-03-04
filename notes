@@ -5,3 +5,12 @@ as well as beginPath and the various ways that it makes shapes
 
 This is the MDN website for Canvas 2d
 https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_animations
+
+
+const can = document.createElement(‘canvas’)
+const ctx2 = can.getContext(‘2d')
+ctx.drawImage(can2, 0, 0, can.width, can.height)
+
+interpolation
+
+think in terms of a base unit

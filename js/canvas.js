@@ -7,15 +7,18 @@ class Turtle {
     this.canvas = canvas;
   }
   render(){
-    this.canvas.fillStyle = 'red'
-    this.canvas.beginPath
-    this.canvas.arc(...this.pos,0,Math.PI*2,false);
-    this.canvas.fill();
+    ctx.fillStyle = 'red'
+    ctx.beginPath();
+    ctx.arc(...this.pos,0,Math.PI*2,false);
+    ctx.fill();
   }
   
   forward(steps = 1) {
-    //this.canvas.clearRect(0,0,500,500);
-    this.pos[0] += steps;
+    if (this.pos[0] != steps) {
+      for(let i = 0;i <= steps; i++){
+        this.pos[0]++;
+      }
+    }
   }
   
   rotate(degrees){
@@ -23,25 +26,22 @@ class Turtle {
   }
 }
 
-let turtle;
+let ctx,turtle;
 
 function init() {
   window.requestAnimationFrame(draw);
-  
-  turtle = new Turtle(10,10,16,ctx)
+  ctx = document.getElementById('canvas').getContext('2d');
+  turtle = new Turtle(10,10,16,ctx);
 }
 
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
+  
 
   //ctx.globalCompositeOperation = 'destination-over';
-  ctx.clearRect(0, 0, 300, 300); // clear canvas
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clear canvas
 
-  ctx.fillStyle = 'red'
-  ctx.beginPath
-  ctx.arc(...turtle.pos,0,Math.PI*2,false);
-  ctx.fill();
-  turtle.pos[0]++;
+  turtle.render();
+  turtle.forward(100);
   //console.log("hello");
 
   window.requestAnimationFrame(draw);
