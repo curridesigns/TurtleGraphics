@@ -1,28 +1,38 @@
 class Turtle {
   constructor(tempX, tempY, tempSize,canvas){
     this.write = false;
-    this.pos = [tempX,tempY,tempSize];
+    this.pos = [tempX,tempY];
+    this.size = tempSize;
     this.orientation = 0;
     this.oldPOS = [];
     this.canvas = canvas;
+    this.numberOfCommands = {
+      commandOrder:[],
+      forward:[],
+      right:[],
+    }
   }
   render(){
     ctx.fillStyle = 'red'
     ctx.beginPath();
-    ctx.arc(...this.pos,0,Math.PI*2,false);
+    ctx.arc(...this.pos,this.size,0,Math.PI*2,false);
     ctx.fill();
   }
   
   forward(steps = 1) {
-    if (this.pos[0] != steps) {
-      for(let i = 0;i <= steps; i++){
-        this.pos[0]++;
-      }
-    }
+    if(this.numberOfCommands.forward[commandNumber]===undefined){
+      this.numberOfCommands.commandOrder[commandNumber] = [this._forward(steps)]
+    } 
+    commandNumber++;
   }
   
   rotate(degrees){
 
+  }
+
+  _forward(steps){
+    this.oldPOS[0] = this.pos;
+    
   }
 }
 
@@ -42,22 +52,30 @@ const frameRateInMillis =  1000 / 20 // 30 FPS
 let x = 0
 let y = 100
 
+let turtle,commandNumber;
+
 function setup(){
   window.requestAnimationFrame(loop);
+  turtle = new Turtle(50,50,8,ctx);
 }
 
-function render () {
-
-	// Move box
-	x = (x + 1) % 200
-  
-  // Background
+function draw () {
   ctx.fillStyle = "blue"
-	ctx.fillRect(0, 0, can.width, can.height)
+  ctx.fillRect(0, 0, can.width, can.height)
+  commandNumber = 0;
+  turtle.render();
+  turtle.forward();
+  console.log(turtle.numberOfCommands.commandOrder)
+  turtle.forward(5)
+	// // Move box
+	// x = (x + 1) % 200
+  
+  // // Background
+  
 
-	// Box
-	ctx.fillStyle = "red"
-  ctx.fillRect(x - 15, y - 15, 30, 30)
+	// // Box
+	// ctx.fillStyle = "red"
+  // ctx.fillRect(x - 15, y - 15, 30, 30)
 
 }
 
@@ -75,7 +93,7 @@ function loop (time) { // Add the time parameter, and requestAnimation frame fil
   	aggregatedTime = 0 // Reset aggregated time, it can also be carried over.
   	
     // DRAW HERE!
-    render()
+    draw()
   
   }
 
