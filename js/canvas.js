@@ -5,20 +5,29 @@ const turtle = {
     this.size = tempSize;
     this.orientation = 0;
     this.canvas = canvas;
+    this.pixelsPerStep = 5
+    this.needsRender = true;
   },
   render(){
-    turtleCtx.translate(...this.pos);
-    turtleCtx.fillStyle = 'red'
-    turtleCtx.fillRect(-5,-10,10,20);
-    turtleCtx.translate(-this.pos[0],-this.pos[1]);
- //   this.needsRender = false
+    if (this.needsRender){
+      turtleCtx.clearRect(0,0,turtleCan.width,turtleCan.height);
+      turtleCtx.translate(...this.pos);
+      turtleCtx.fillStyle = 'red'
+      turtleCtx.fillRect(-5,-10,10,20);
+      turtleCtx.translate(-this.pos[0],-this.pos[1]);
+      this.needsRender = false
+    } else {
+      return;
+    }
   },
   
-  forward(steps = 10) {
-    this.pos[0] += steps;
+  forward(steps = 1) {
+    this.pos[0] += ((steps*this.pixelsPerStep) * Math.cos(this.orientation));
+    this.pos[1] += ((steps*this.pixelsPerStep) * Math.sin(this.orientation));
+    this.needsRender = true;
   },
 
-  back(steps = 10) {
+  back(steps = 1) {
     this.forward(-steps);
   },
   
@@ -27,7 +36,7 @@ const turtle = {
     turtleCtx.rotate(degrees * Math.PI / 180)
     turtleCtx.translate(-this.pos[0],-this.pos[1]);
     this.orientation += degrees;
-   // this.needsRender = true
+    this.needsRender = true;
   },
 
   rotateLeft(degrees = 15){
@@ -39,8 +48,11 @@ const graph = {
   pos: undefined
 }
 
-const turtleCan = document.querySelector('#turtleCanvas');
 const lineCan = document.querySelector('#lineCanvas');
+const turtleCan = document.createElement('canvas');
+
+const lineCtx = lineCan.getContext('2d');
+const turtleCtx = turtleCan.getContext('2d');
 
 const canvasSquare = 1000;
 
@@ -49,8 +61,6 @@ turtleCan.height = canvasSquare;
 lineCan.width = canvasSquare;
 lineCan.height = canvasSquare;
 
-const turtleCtx = turtleCan.getContext('2d');
-const lineCtx = lineCan.getContext('2d');
 
 
 let lastTime = 0
@@ -67,22 +77,22 @@ backButt.addEventListener('click', () => {turtle.back();});
 const rotateButt = document.querySelector('.rotate');
 rotateButt.addEventListener('click', () => {turtle.rotate();});
 const rotateLeftButt = document.querySelector('.rotateLeft');
-//rotateLeftButt.addEventListener('click', () => {turtle.rotateLeft();});
+rotateLeftButt.addEventListener('click', () => {turtle.rotateLeft();});
 
-rotateLeftButt.addEventListener('pointerdown', leftButtonDown);
-rotateLeftButt.addEventListener('pointerup', leftButtonUp);
+//rotateLeftButt.addEventListener('pointerdown', leftButtonDown);
+//rotateLeftButt.addEventListener('pointerup', leftButtonUp);
 
 
-function leftButtonDown (event) {
-  console.log(event)
-  console.log('Down')
- // rotateLeftButt.addEventListener('pointerup', leftButtonUp, {once:true});
- // rotateLeftButt.removeEventListener('pointerdown', leftButtonDown)
-}
+// function leftButtonDown (event) {
+//   console.log(event)
+//   console.log('Down')
+//  // rotateLeftButt.addEventListener('pointerup', leftButtonUp, {once:true});
+//  // rotateLeftButt.removeEventListener('pointerdown', leftButtonDown)
+// }
 
-function leftButtonUp(event) {
-  console.log("Up")
-}
+// function leftButtonUp(event) {
+//   console.log("Up")
+// }
 
 
 function setup(){
@@ -92,11 +102,11 @@ function setup(){
 }
 
 function draw () {
-  turtleCtx.clearRect(0,0,turtleCan.width,turtleCan.height);
+  
   lineCtx.fillStyle = "blue"
   lineCtx.fillRect(0, 0, turtleCan.width, turtleCan.height)
   turtle.render();
-  
+  lineCtx.drawImage(turtleCan,0,0)
   // TODO: Did the turtle POS change?
   // If it did, then draw a line from oldPOS to turtlePOS
 
