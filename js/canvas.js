@@ -3,18 +3,19 @@ const turtle = {
     this.write = false;
     this.pos = [tempX,tempY];
     this.size = tempSize;
-    this.orientation = 0;
+    this.orientation = 1.5708;
     this.canvas = canvas;
-    this.pixelsPerStep = 5
+    this.pixelsPerStep = 50
     this.needsRender = true;
   },
   render(){
     if (this.needsRender){
       turtleCtx.clearRect(0,0,turtleCan.width,turtleCan.height);
-      turtleCtx.translate(...this.pos);
+      // turtleCtx.translate((this.pos[0]+5),(this.pos[1]+10));
+      //turtleCtx.rotate(this.orientation);
       turtleCtx.fillStyle = 'red'
-      turtleCtx.fillRect(-5,-10,10,20);
-      turtleCtx.translate(-this.pos[0],-this.pos[1]);
+      turtleCtx.fillRect(this.pos[0],this.pos[1],10,20);
+      // turtleCtx.translate(-(this.pos[0]+5),-(this.pos[1]+10));
       this.needsRender = false
     } else {
       return;
@@ -22,8 +23,8 @@ const turtle = {
   },
   
   forward(steps = 1) {
-    this.pos[0] += ((steps*this.pixelsPerStep) * Math.cos(this.orientation));
     this.pos[1] += ((steps*this.pixelsPerStep) * Math.sin(this.orientation));
+    this.pos[0] += ((steps*this.pixelsPerStep) * Math.cos(this.orientation));
     this.needsRender = true;
   },
 
@@ -32,10 +33,7 @@ const turtle = {
   },
   
   rotate(degrees = 15){
-    turtleCtx.translate(...this.pos);
-    turtleCtx.rotate(degrees * Math.PI / 180)
-    turtleCtx.translate(-this.pos[0],-this.pos[1]);
-    this.orientation += degrees;
+    this.orientation += (degrees * (Math.PI / 180));
     this.needsRender = true;
   },
 
@@ -99,12 +97,11 @@ function setup(){
   window.requestAnimationFrame(loop);
   turtle.constructor(50,50,8,turtleCtx);
   graph.pos = turtle.pos.slice(0)
+  lineCtx.fillStyle = "blue"
+  lineCtx.fillRect(0, 0, turtleCan.width, turtleCan.height);
 }
 
 function draw () {
-  
-  lineCtx.fillStyle = "blue"
-  lineCtx.fillRect(0, 0, turtleCan.width, turtleCan.height)
   turtle.render();
   lineCtx.drawImage(turtleCan,0,0)
   // TODO: Did the turtle POS change?
@@ -112,7 +109,10 @@ function draw () {
 
   if (turtle.pos[0] !== graph.pos[0] || turtle.pos[1] !== graph.pos[1]) {
 
-    console.log("Turtle Position Has Changed!")
+    lineCtx.beginPath();
+    lineCtx.moveTo(...graph.pos);
+    lineCtx.lineTo(...turtle.pos);
+    lineCtx.stroke();
 
     // TODO: draw line from graph.pos to turtle.pos
 
