@@ -1,27 +1,32 @@
 const turtle = {
+  //kind of a left over from when this was a class, but it works well for setting up the turtle
   constructor(tempX, tempY, tempSize,canvas){
     this.write = false;
     this.pos = [tempX,tempY];
     this.size = tempSize;
-    this.orientation = 1.5708;
+    this.orientation = 0;
     this.canvas = canvas;
-    this.pixelsPerStep = 50
+    this.pixelsPerStep = 10;
     this.needsRender = true;
+    this.img = new Image();
   },
+
+  //renders the turtle, and checks to see if needs to be updated every frame
   render(){
     if (this.needsRender){
-      turtleCtx.clearRect(0,0,turtleCan.width,turtleCan.height);
-      // turtleCtx.translate((this.pos[0]+5),(this.pos[1]+10));
-      //turtleCtx.rotate(this.orientation);
-      turtleCtx.fillStyle = 'red'
-      turtleCtx.fillRect(this.pos[0],this.pos[1],10,20);
-      // turtleCtx.translate(-(this.pos[0]+5),-(this.pos[1]+10));
-      this.needsRender = false
+        turtleCtx.clearRect(0,0,turtleCan.width,turtleCan.height);
+        turtleCtx.translate((this.pos[0]),(this.pos[1]));
+        turtleCtx.rotate(this.orientation);
+        turtleCtx.drawImage(this.img,-this.img.width/2,-this.img.width/2)
+        turtleCtx.rotate(-this.orientation);
+        turtleCtx.translate(-(this.pos[0]),-(this.pos[1]));
+        this.needsRender = false
     } else {
       return;
     }
   },
   
+  //moves the turtle forward based on the orientation of the turtle
   forward(steps = 1) {
     this.pos[1] += ((steps*this.pixelsPerStep) * Math.sin(this.orientation));
     this.pos[0] += ((steps*this.pixelsPerStep) * Math.cos(this.orientation));
@@ -33,13 +38,16 @@ const turtle = {
   },
   
   rotate(degrees = 15){
-    this.orientation += (degrees * (Math.PI / 180));
+    let radians = (degrees * (Math.PI / 180))
+    this.orientation += radians;
     this.needsRender = true;
   },
 
   rotateLeft(degrees = 15){
     this.rotate(-degrees);
-  }
+  },
+
+  
 }
 
 const graph = {
@@ -47,7 +55,7 @@ const graph = {
 }
 
 const lineCan = document.querySelector('#lineCanvas');
-const turtleCan = document.createElement('canvas');
+const turtleCan = document.querySelector('#turtleCanvas');
 
 const lineCtx = lineCan.getContext('2d');
 const turtleCtx = turtleCan.getContext('2d');
@@ -76,34 +84,26 @@ const rotateButt = document.querySelector('.rotate');
 rotateButt.addEventListener('click', () => {turtle.rotate();});
 const rotateLeftButt = document.querySelector('.rotateLeft');
 rotateLeftButt.addEventListener('click', () => {turtle.rotateLeft();});
+const runButt = document.querySelector('#run');
+const prompt = document.querySelector('#prompt');
 
-//rotateLeftButt.addEventListener('pointerdown', leftButtonDown);
-//rotateLeftButt.addEventListener('pointerup', leftButtonUp);
 
-
-// function leftButtonDown (event) {
-//   console.log(event)
-//   console.log('Down')
-//  // rotateLeftButt.addEventListener('pointerup', leftButtonUp, {once:true});
-//  // rotateLeftButt.removeEventListener('pointerdown', leftButtonDown)
-// }
-
-// function leftButtonUp(event) {
-//   console.log("Up")
-// }
 
 
 function setup(){
-  window.requestAnimationFrame(loop);
   turtle.constructor(50,50,8,turtleCtx);
+  turtle.img.src = './images/Turtle.png'
   graph.pos = turtle.pos.slice(0)
   lineCtx.fillStyle = "blue"
   lineCtx.fillRect(0, 0, turtleCan.width, turtleCan.height);
+  window.requestAnimationFrame(loop);
 }
 
 function draw () {
   turtle.render();
-  lineCtx.drawImage(turtleCan,0,0)
+  turtleCtx.fillStyle = "yellow";
+  turtleCtx.fillRect(turtleCan.width/2,turtleCan.height,10,20);
+  //lineCtx.drawImage(turtleCan,0,0)
   // TODO: Did the turtle POS change?
   // If it did, then draw a line from oldPOS to turtlePOS
 
@@ -118,18 +118,6 @@ function draw () {
 
     graph.pos = turtle.pos.slice(0)
   }
-
-  //turtle.forward();
-  //console.log(turtle.numberOfCommands.commandOrder)
-	// // Move box
-	// x = (x + 1) % 200
-  
-  // // Background
-  
-
-	// // Box
-	// turtleCtx.fillStyle = "red"
-  // turtleCtx.fillRect(x - 15, y - 15, 30, 30)
 
 }
 

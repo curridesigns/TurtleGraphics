@@ -168,4 +168,21 @@ function draw() {
 
 init();
 
+
+//some stuff that Jeffrey showed me
+//rotateLeftButt.addEventListener('pointerdown', leftButtonDown);
+//rotateLeftButt.addEventListener('pointerup', leftButtonUp);
+
+
+// function leftButtonDown (event) {
+//   console.log(event)
+//   console.log('Down')
+//  // rotateLeftButt.addEventListener('pointerup', leftButtonUp, {once:true});
+//  // rotateLeftButt.removeEventListener('pointerdown', leftButtonDown)
+// }
+
+// function leftButtonUp(event) {
+//   console.log("Up")
+// }
+
 */
