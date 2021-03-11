@@ -17,3 +17,15 @@ rotateLeftButt.addEventListener('click', () => {turtle.rotateLeft();});
 const runButt = document.querySelector('#run');
 const prompt = document.querySelector('#prompt');
 
+const commandLine = {
+    constructor(){
+        this.promptHistory = [];
+        this.promptHistoryIndex = 0;
+        this.promptText = "";
+    },
+
+    runCommand(){
+        
+    }
+}
+

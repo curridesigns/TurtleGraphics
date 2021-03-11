@@ -6,7 +6,7 @@ const turtleCan = document.querySelector('#turtleCanvas');
 const lineCtx = lineCan.getContext('2d');
 const turtleCtx = turtleCan.getContext('2d');
 
-const canvasSquare = 1000;
+const canvasSquare = 800;
 
 turtleCan.width = canvasSquare;
 turtleCan.height = canvasSquare;
