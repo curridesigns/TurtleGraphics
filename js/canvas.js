@@ -27,6 +27,7 @@ const frameRateInMillis =  1000 / 20 // 30 FPS
 function setup(){
   turtle.constructor(50,50,8,turtleCtx);
   graph.constructor();
+  commandLine.constructor();
   turtle.img.src = './images/Turtle.png'
   graph.pos = turtle.pos.slice(0)
   lineCtx.fillStyle = "blue"
