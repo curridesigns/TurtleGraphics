@@ -31,7 +31,7 @@ const commandLine = {
         //this.history.unshift(this.text);
         let number;
         if (Number(this.text[1])){
-            number = Number(this.text[1]);
+            number = Math.floor(Number(this.text[1]));
         } else {
             number = undefined;
         }
@@ -41,13 +41,13 @@ const commandLine = {
                 turtle.forward(number);
                 break;
             case 'backward':
-                turtle.back(Number(this.text[1]));
+                turtle.back(number);
                 break;
             case 'right':
-                turtle.rotate(Number(this.text[1]));
+                turtle.rotate(number);
                 break;
             case 'left':
-                turtle.rotateLeft(Number(this.text[1]));
+                turtle.rotateLeft(number);
                 break;
         }
         //console.log(this.text);
