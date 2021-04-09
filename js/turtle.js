@@ -17,6 +17,12 @@ const turtle = {
   
     //renders the turtle, and checks to see if needs to be updated every frame
     render(){
+      if (this.pos[0] > (this.newPOS[0]-1) || this.pos[0] < (this.newPOS[0]+1) ){
+        this.pos[0] = this.newPOS[0];
+      }
+      if (this.pos[1] > (this.newPOS[1]-1) || this.pos[1] < (this.newPOS[1]+1)){
+        this.pos[1] = this.newPOS[1];
+      }
       if (this.needsRender){
           if(this.pos[0] !== this.newPOS[0] || this.pos[1] !== this.newPOS[1]){
             if(this.backwards){
@@ -32,7 +38,7 @@ const turtle = {
             turtleCtx.drawImage(this.img,-this.img.width/4,-this.img.width/4,60,60)
             turtleCtx.rotate(-this.orientation);
             turtleCtx.translate(-(this.pos[0]),-(this.pos[1]));
-          } else if (this.pos[0] === this.newPOS[0] && this.pos[1] === this.newPOS[1]){
+          } else if (this.newPOS[0] === this.pos[0] || this.newPOS[1] === this.pos[1]){
             turtleCtx.clearRect(0,0,turtleCan.width,turtleCan.height);
             turtleCtx.translate((this.pos[0]),(this.pos[1]));
             turtleCtx.rotate(this.orientation);
